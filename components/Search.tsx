@@ -14,7 +14,7 @@ export default function Search({ onSelectCity }: SearchProps) {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const { data: cities, isLoading, error } = useCities(debouncedSearchTerm);
 
-  // Note: Just for Debounce effect on search
+  // Note: Just for Debounce effect on search, probably can be replaced with lodash.debounce lib or similar
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
@@ -43,7 +43,7 @@ export default function Search({ onSelectCity }: SearchProps) {
       {error && <p>Error: {error.message}</p>}
       {cities && (
         <ul className="mt-2">
-          {/* Need to use `index` as key because the API somtimes return duplicate cities (e.g Paris, FR) */}
+          {/* Note: Need to use `index` as key because the API somtimes return duplicate cities (e.g Paris, FR) */}
           {cities.map((city, index) => (
             <li key={index} onClick={() => onSelectCity(city)} className="cursor-pointer hover:bg-gray-100 p-2">
               {city.name}, {city.country}
