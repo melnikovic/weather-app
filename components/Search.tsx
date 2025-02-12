@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { City, useCities } from '@/hooks/useCities';
+import { MapPin } from 'lucide-react';
 
 interface SearchProps {
   onSelectCity: (city: City) => void;
@@ -29,8 +30,14 @@ export default function Search({ onSelectCity }: SearchProps) {
     e.preventDefault();
     if (cities && cities.length > 0) {
       const city = cities[0];
+      setSearchTerm('');
       onSelectCity(city);
     }
+  };
+
+  const handleCitySelect = (city: City) => {
+    setSearchTerm('');
+    onSelectCity(city);
   };
 
   return (
@@ -41,12 +48,14 @@ export default function Search({ onSelectCity }: SearchProps) {
       </div>
       {isLoading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
-      {cities && (
-        <ul className="mt-2">
+      {cities && searchTerm.length > 0 && (
+        <ul className="mt-2 border-b border-l border-r border-gray-300">
           {/* Note: Need to use `index` as key because the API somtimes return duplicate cities (e.g Paris, FR) */}
           {cities.map((city, index) => (
-            <li key={index} onClick={() => onSelectCity(city)} className="cursor-pointer hover:bg-gray-100 p-2">
-              {city.name}, {city.country}
+            <li key={index} onClick={() => handleCitySelect(city)} className="cursor-pointer hover:bg-gray-100 p-2">
+              <span className="inline-flex items-center">
+                <MapPin className="w-5 h-5 mr-2" /> {city.name}, {city.country}
+              </span>
             </li>
           ))}
         </ul>
