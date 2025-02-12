@@ -44,11 +44,14 @@ export default function WeatherDisplay({ city }: { city: City }) {
       <CardContent>
         {weather && (
           <>
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col sm:flex-row justify-between items-start">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-blue-600" />
-                  <h2 className="text-2xl font-semibold">{weather.name}</h2>
+                  <h2 className="text-2xl font-semibold" title={weather.name}>
+                    {/* Note: Sometimes weather name can go quite crazy and it can not fit. */}
+                    {weather.name.length > 18 ? `${weather.name.substring(0, 15)}...` : weather.name}
+                  </h2>
                 </div>
                 <p className="text-lg text-gray-600 capitalize">{weather.weather[0].description}</p>
                 <div className="mt-4 grid grid-cols-2 gap-4">
@@ -62,7 +65,7 @@ export default function WeatherDisplay({ city }: { city: City }) {
                   </div>
                 </div>
               </div>
-              <div className="flex-shrink-0 ml-4">
+              <div className="flex-shrink-0 mt-4 sm:mt-0 md:ml-4">
                 <TemperatureCard temperature={Math.round(weather.main.temp)} />
               </div>
             </div>
