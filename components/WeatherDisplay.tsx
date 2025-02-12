@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { useFavorites } from '@/contexts/FavoritesContext';
 import { City } from '@/hooks/useCities';
 import { MapPin } from 'lucide-react';
+import { TemperatureCard } from './TemperatureCard';
 
 export default function WeatherDisplay({ city }: { city: City }) {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -44,12 +45,11 @@ export default function WeatherDisplay({ city }: { city: City }) {
         {weather && (
           <>
             <div className="flex justify-between items-start">
-              <div>
+              <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-blue-600" />
                   <h2 className="text-2xl font-semibold">{weather.name}</h2>
                 </div>
-                <p className="text-4xl font-bold mt-4">{Math.round(weather.main.temp)}°C</p>
                 <p className="text-lg text-gray-600 capitalize">{weather.weather[0].description}</p>
                 <div className="mt-4 grid grid-cols-2 gap-4">
                   <div>
@@ -58,9 +58,12 @@ export default function WeatherDisplay({ city }: { city: City }) {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Wind Speed</p>
-                    <p className="text-lg font-semibold">{weather.wind.speed} m/s</p>
+                    <p className="text-lg font-semibold">{Math.round(weather.wind.speed)} m/s</p>
                   </div>
                 </div>
+              </div>
+              <div className="flex-shrink-0 ml-4">
+                <TemperatureCard temperature={Math.round(weather.main.temp)} />
               </div>
             </div>
           </>
